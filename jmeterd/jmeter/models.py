@@ -46,6 +46,8 @@ class Config(models.Model):
 class Machine(models.Model):
     """
     """
+    username = models.CharField()
+    port = models.PositiveIntegerField()
     intranet_ip = models.IPAddressField()
     external_ip = models.IPAddressField()
     password = models.CharField()
