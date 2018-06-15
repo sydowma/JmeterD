@@ -65,7 +65,7 @@ class Machine(models.Model):
         ordering = ['-gmt_modified']
         default_permissions = ('add', 'change')
 
-class File(models.Model):
+class Files(models.Model):
     """
     """
     name = models.CharField(
@@ -163,7 +163,7 @@ class Task(AbstractTask):
     )
 
     jmx_file = models.ForeignKey(
-        File,
+        Files,
         related_name='task_jmx_file',
         on_delete=models.CASCADE,
         null=False,
@@ -172,7 +172,7 @@ class Task(AbstractTask):
     )
 
     data_file = models.ForeignKey(
-        File,
+        Files,
         related_name='task_data_file',
         on_delete=models.CASCADE,
         null=False,
@@ -212,7 +212,7 @@ class TaskResult(AbstractTask):
     """
     """
     jmx_file = models.ForeignKey(
-        File,
+        Files,
         related_name='result_jmx_file',
         on_delete=models.CASCADE,
         null=False,
@@ -221,7 +221,7 @@ class TaskResult(AbstractTask):
     )
 
     data_file = models.ForeignKey(
-        File,
+        Files,
         related_name='result_data_file',
         on_delete=models.CASCADE,
         null=False,
