@@ -227,6 +227,8 @@ class TaskResult(AbstractTask):
         null=False,
         blank=True
     )
+
+
     # 成功或者失败
     status = models.PositiveSmallIntegerField(
         '状态',

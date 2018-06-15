@@ -81,7 +81,7 @@ DATABASES = {
         'OPTIONS': {
             'init_command': 'SET default_storage_engine=INNODB',
         },
-        'NAME': 'django_interface',  # 数据库名称
+        'NAME': 'jmeterd',  # 数据库名称
         'USER': 'root',
         'PASSWORD': 'root',  # 安装 mysql 数据库时，输入的 root 用户的密码
         'HOST': '127.0.0.1',
