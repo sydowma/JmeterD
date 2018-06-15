@@ -23,7 +23,7 @@ class Machine(models.Model):
         null=False,
         default=22
     )
-    ip = models.IPAddressField(
+    ip = models.GenericIPAddressField(
         'IP地址',
         blank=False,
         null=False,
@@ -91,22 +91,9 @@ class File(models.Model):
 
 class AbstractTask(models.Model):
 
-    jmx_file = models.ForeignKey(
-        File,
-        on_delete=models.CASCADE,
-        null=False,
-        blank=False,
-        default=0
-    )
-    data_file = models.ForeignKey(
-        File,
-        on_delete=models.CASCADE,
-        null=False,
-        blank=True
-    )
-
     name = models.CharField(
         '任务名',
+        max_length=20,
         blank=False,
         null=False,
         default=""
@@ -174,6 +161,23 @@ class Task(AbstractTask):
         blank=True,
         default=True,
     )
+
+    jmx_file = models.ForeignKey(
+        File,
+        related_name='task_jmx_file',
+        on_delete=models.CASCADE,
+        null=False,
+        blank=False,
+        default=0
+    )
+
+    data_file = models.ForeignKey(
+        File,
+        related_name='task_data_file',
+        on_delete=models.CASCADE,
+        null=False,
+        blank=True
+    )
     
     task_start_time = models.DateTimeField(
         '任务结束时间',
@@ -207,11 +211,36 @@ class Task(AbstractTask):
 class TaskResult(AbstractTask):
     """
     """
+    jmx_file = models.ForeignKey(
+        File,
+        related_name='result_jmx_file',
+        on_delete=models.CASCADE,
+        null=False,
+        blank=False,
+        default=0
+    )
 
+    data_file = models.ForeignKey(
+        File,
+        related_name='result_data_file',
+        on_delete=models.CASCADE,
+        null=False,
+        blank=True
+    )
     # 成功或者失败
-    status = models.PositiveSmallIntegerField()
-    gmt_create = models.DateTimeField()
-    gmt_modified = models.DateTimeField()
+    status = models.PositiveSmallIntegerField(
+        '状态',
+        null=False,
+        blank=False
+    )
+    gmt_create = models.DateTimeField(
+        null=False,
+        auto_now_add=True
+    )
+    gmt_modified = models.DateTimeField(
+        null=False,
+        auto_now=True
+    )
 
     class Meta:
         db_table = 'jmeter_task_result'
@@ -220,7 +249,7 @@ class TaskResult(AbstractTask):
 
 
 class Host(models.Model):
-    ip = models.IPAddressField(
+    ip = models.GenericIPAddressField(
         'IP地址',
         null=False,
         blank=False,

@@ -77,9 +77,15 @@ WSGI_APPLICATION = 'jmeterd.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+        'ENGINE': 'django.db.backends.mysql',
+        'OPTIONS': {
+            'init_command': 'SET default_storage_engine=INNODB',
+        },
+        'NAME': 'django_interface',  # 数据库名称
+        'USER': 'root',
+        'PASSWORD': 'root',  # 安装 mysql 数据库时，输入的 root 用户的密码
+        'HOST': '127.0.0.1',
+    },
 }
 
 
