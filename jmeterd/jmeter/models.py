@@ -5,6 +5,8 @@ __doc__ = """
 存储文件地址
 历史记录
 任务信息
+
+注意，对 Model 的操作写在 Manage 中，不要把复杂操作写到 views 中
 """
 
 class Machine(models.Model):
