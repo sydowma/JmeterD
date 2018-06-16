@@ -51,6 +51,20 @@ class Machine(models.Model):
         default=0
 
     )
+
+    master_machine = models.BooleanField(
+        '是否是压力源主机器,只允许一个主机器',
+        blank=False,
+        null=False,
+        default=False
+    )
+
+    slave_machine = models.BooleanField(
+        '是否是从机器',
+        blank=False,
+        null=False,
+        default=False
+    )
     gmt_create = models.DateTimeField(
         "创建时间",
         null=False,
@@ -132,8 +146,7 @@ class AbstractTask(models.Model):
         default=0
     )
 
-
-    source_machine = models.ForeignKey(
+    machines = models.ForeignKey(
         Machine,
         on_delete=models.CASCADE,
         db_constraint=False,
@@ -141,14 +154,7 @@ class AbstractTask(models.Model):
         blank=False,
         verbose_name='压力源机器'
     )
-    # target_machine = models.ForeignKey(
-    #     Machine,
-    #     on_delete=models.CASCADE,
-    #     db_constraint=False,
-    #     null=False,
-    #     blank=False,
-    #     verbose_name='目标机器'
-    # )
+
 
     class Meta:
         abstract = True
