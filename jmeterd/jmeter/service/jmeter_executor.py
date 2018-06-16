@@ -16,6 +16,9 @@ class JmeterExecutor():
         """
         检查环境是否正常
         """
+    
+    def _run_shell(self):
+        return 'sh {path}jmeter.sh -n -t {jmx_file} -l {jtl_path} -e -o {report_path}'.format()
 
     
 
