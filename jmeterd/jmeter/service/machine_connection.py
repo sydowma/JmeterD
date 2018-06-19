@@ -34,7 +34,7 @@ class MachineConnection():
         连接
         """
 
-        """  如果机器数量为空，就使用本地机器  """
+        """  如果机器数量为空，就使用本地机器  @see connection_executor """
         if self.machine is None:
             self.connection = Connection('local')
         else:

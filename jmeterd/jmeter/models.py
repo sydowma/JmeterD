@@ -9,6 +9,39 @@ __doc__ = """
 注意，对 Model 的操作写在 Manage 中，不要把复杂操作写到 views 中
 """
 
+
+class Host(models.Model):
+    ip = models.GenericIPAddressField(
+        'IP地址',
+        null=False,
+        blank=False,
+        default='127.0.0.1'
+
+    )
+    server = models.URLField(
+        '域名',
+        null=False,
+        blank=False,
+        default=""
+    )
+
+    gmt_create = models.DateTimeField(
+        "创建时间",
+        null=False,
+        auto_now_add=True
+    )
+    gmt_modified = models.DateTimeField(
+        '修改时间',
+        null=False,
+        auto_now=True,
+    )
+
+    class Meta:
+        db_table = 'jmeter_host'
+        ordering = ['-gmt_modified']
+        default_permissions = ('add', 'change')
+        
+
 class Machine(models.Model):
     """
     """
@@ -65,6 +98,15 @@ class Machine(models.Model):
         null=False,
         default=False
     )
+
+    host = models.ForeignKey(
+        Host,
+        on_delete=models.CASCADE,
+        db_constraint=False,
+        null=False,
+        blank=False
+    )
+
     gmt_create = models.DateTimeField(
         "创建时间",
         null=False,
@@ -258,37 +300,6 @@ class TaskResult(AbstractTask):
         default_permissions = ('add', 'change')
 
 
-class Host(models.Model):
-    ip = models.GenericIPAddressField(
-        'IP地址',
-        null=False,
-        blank=False,
-        default='127.0.0.1'
-        
-    )
-    server = models.URLField(
-        '域名',
-        null=False,
-        blank=False,
-        default=""
-    )
-
-    gmt_create = models.DateTimeField(
-        "创建时间",
-        null=False,
-        auto_now_add=True
-    )
-    gmt_modified = models.DateTimeField(
-        '修改时间',
-        null=False,
-        auto_now=True,
-    )
-
-    class Meta:
-        db_table = 'jmeter_host'
-        ordering = ['-gmt_modified']
-        default_permissions = ('add', 'change')
-
 class Config(models.Model):
     """
     配置
@@ -311,13 +322,7 @@ class Config(models.Model):
         blank=False,
         default=""
     )
-    host = models.ForeignKey(
-        Host,
-        on_delete=models.CASCADE,
-        db_constraint=False,
-        null=False,
-        blank=False
-    )
+
     gmt_create = models.DateTimeField(
         "创建时间",
         null=False,
