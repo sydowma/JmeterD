@@ -9,15 +9,21 @@ class ConnectionExecutor():
         """
         self.connection = connection
 
+    @property
+    def _is_local(self):
+        if self.connection.host == LOCAL:
+            return True
+        else:
+            return False
 
     def run(self, command):
-        if self.connection.host == LOCAL:
+        if self._is_local:
             self.connection.local(command)
         else:
             self.connection.run(command)
 
     def sudo(self, command):
-        if self.connection.host == LOCAL:
+        if self._is_local:
             self.connection.local(command)
         else:
             self.connection.sudo(command)
