@@ -105,19 +105,6 @@ CACHES = {
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
 
-#####################################  Django REST Framework
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    ),
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
-        # Token must use HTTPS
-        # 'rest_framework.authentication.TokenAuthentication',
-    ),
-}
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
@@ -162,4 +149,33 @@ STATIC_URL = '/static/'
 
 
 #################################### Add
-JMETER_PATH = settings.BASE_DIR + '/jmeter'
+
+#################################### REST 
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 20
+}
+
+#####################################  Django REST Framework
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        # 'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.AllowAny',
+        
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        # Token must use HTTPS
+        # 'rest_framework.authentication.TokenAuthentication',
+    ),
+
+    'EXCEPTION_HANDLER': (
+        'util.http.api_exception.custom_exception_handler'
+    )
+}
+
+
+#################################### JMETER
+JMETER_PATH = BASE_DIR + '/jmeter'
+

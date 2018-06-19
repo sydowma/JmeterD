@@ -17,7 +17,17 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url, include
 
+from jmeter.views import TaskViewSet
+from rest_framework import routers
+
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^api-auth/', include('rest_framework.urls'))
 ]
+
+
+router = routers.DefaultRouter()
+router.register(r'task', TaskViewSet, base_name='task')
+urlpatterns = router.urls

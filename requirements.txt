@@ -5,3 +5,4 @@ pymysql==0.8.1
 redis==2.10.6
 django-redis==4.9.0
 django-cors-headers==2.2.0
+python-hosts==0.4.1

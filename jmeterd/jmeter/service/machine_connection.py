@@ -57,7 +57,7 @@ class MachineConnection():
 
     def is_linux(self):
         return 'linux' in sys.platform or 'Linux' in sys.platform
-    
+
     def is_mac(self):
         return sys.platform == 'darwin'
     
