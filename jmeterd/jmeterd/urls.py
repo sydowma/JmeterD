@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url, include
 
-from jmeter.views import TaskViewSet
+from jmeter.views import (TaskViewSet, MachineViewSet, FilesViewSet, TaskResultViewSet)
 from rest_framework import routers
 
 
@@ -30,4 +30,7 @@ urlpatterns = [
 
 router = routers.DefaultRouter()
 router.register(r'task', TaskViewSet, base_name='task')
+router.register(r'taskResult', TaskResultViewSet, base_name='taskResult')
+router.register(r'machine', MachineViewSet, base_name='machine')
+router.register(r'files', FilesViewSet, base_name='files')
 urlpatterns = router.urls

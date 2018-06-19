@@ -3,53 +3,71 @@ from django.shortcuts import render
 # Create your views here.
 from django.shortcuts import get_object_or_404
 from rest_framework import authentication, permissions, status, viewsets
-from rest_framework import status, response
+from rest_framework import status, response, parsers
 
 from util.http import json_response
 from util.http.response_entity import ResponseEntity
 
 from .service import check_host
-from .models import (Task, Machine)
-from .serializers import (TaskSerializer, MachineSerializer)
+from .models import (Task, Machine, Files, TaskResult)
+from .serializers import (TaskSerializer, MachineSerializer, FilesSerializer, TaskResultSerializer)
 
 
-class MachineViewSet(viewsets.ViewSet):
+class MachineViewSet(viewsets.ModelViewSet):
     """
     机器接口
     """
+    queryset = Machine.objects.all()
+    serializer_class = MachineSerializer
 
-    def list(self, request):
-        """
-        """
-        pass
+    # def list(self, request):
+    #     """
+    #     """
+    #     pass
     
-    def retrieve(self, request, pk=None):
-        """
-        """
-        pass
-
-
+    # def retrieve(self, request, pk=None):
+    #     """
+    #     """
+    #     pass
 
 
 class FilesViewSet(viewsets.ViewSet):
     """
     文件接口
     """
+    # queryset = Files.objects.all()
+    # serializer_class = FilesSerializer
+
+    parser_classes = (parsers.FileUploadParser,)
 
     def list(self, request):
         """
         """
-        pass
+        queryset = Files.objects.all()
+        serializer = FilesSerializer(queryset, many=True)
+        return json_response.JsonResponse(ResponseEntity(serializer.data))
 
     def retrieve(self, request, pk=None):
         """
         """
+        queryset = Files.objects.all()
+        file = get_object_or_404(queryset, pk=pk)
+        serializer = Files(file)
+        return json_response.JsonResponse(ResponseEntity(serializer.data))
+    
+    def create(self, request, file_name=None, format=None):
+        """
+        """
+        file_obj = request.data['file']
+        print(file_obj)
         pass
+        
 
 
 class TaskViewSet(viewsets.ViewSet):
     """
     """
+
     def list(self, request):
         """
         """
@@ -67,8 +85,26 @@ class TaskViewSet(viewsets.ViewSet):
         # return response.Response(serializer.data)
         return json_response.JsonResponse(ResponseEntity(serializer.data))
 
+    # def create(self, request):
+    #     pass
 
-class TaskResult(viewsets.ViewSet):
+
+class TaskResultViewSet(viewsets.ReadOnlyModelViewSet):
+
+    queryset = TaskResult.objects.all()
+    serializer_class = TaskResultSerializer
+    # def list(self, request):
+    #     """
+    #     """
+    #     pass
+
+    # def retrieve(self, request, pk=None):
+    #     """
+    #     """
+    #     pass
+
+
+class HostViewSet(viewsets.ViewSet):
     def list(self, request):
         """
         """
@@ -80,19 +116,7 @@ class TaskResult(viewsets.ViewSet):
         pass
 
 
-class Host(viewsets.ViewSet):
-    def list(self, request):
-        """
-        """
-        pass
-
-    def retrieve(self, request, pk=None):
-        """
-        """
-        pass
-
-
-class Config(viewsets.ViewSet):
+class ConfigViewSet(viewsets.ViewSet):
     def list(self, request):
         """
         """

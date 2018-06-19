@@ -40,7 +40,7 @@ class Host(models.Model):
         db_table = 'jmeter_host'
         ordering = ['-gmt_modified']
         default_permissions = ('add', 'change')
-        
+
 
 class Machine(models.Model):
     """
@@ -72,12 +72,14 @@ class Machine(models.Model):
         default=""
 
     )
-    secret_key = models.FileField(
-        '秘钥文件',
-        null=False,
-        blank=True
-    )
-    status = models.PositiveSmallIntegerField(
+
+    # secret_key = models.FileField(
+    #     '秘钥文件',
+    #     null=False,
+    #     blank=True
+    # )
+
+    status = models.BooleanField(
         '状态, 离线/在线',
         blank=False,
         null=False,
@@ -85,27 +87,20 @@ class Machine(models.Model):
 
     )
 
-    master_machine = models.BooleanField(
-        '是否是压力源主机器,只允许一个主机器',
+    is_slave = models.BooleanField(
+        '是否是从机器, 只允许一个主机器',
         blank=False,
         null=False,
         default=False
     )
 
-    slave_machine = models.BooleanField(
-        '是否是从机器',
-        blank=False,
-        null=False,
-        default=False
-    )
-
-    host = models.ForeignKey(
-        Host,
-        on_delete=models.CASCADE,
-        db_constraint=False,
-        null=False,
-        blank=False
-    )
+    # host = models.ForeignKey(
+    #     Host,
+    #     on_delete=models.CASCADE,
+    #     db_constraint=False,
+    #     null=False,
+    #     blank=False
+    # )
 
     gmt_create = models.DateTimeField(
         "创建时间",
@@ -135,7 +130,7 @@ class Files(models.Model):
     )
     
     # 状态，0 未知，  1不存在， 2存在
-    status = models.PositiveIntegerField(
+    status = models.BooleanField(
         blank=False,
         null=False,
         default=0
@@ -230,7 +225,7 @@ class Task(AbstractTask):
     )
     
     task_start_time = models.DateTimeField(
-        '任务结束时间',
+        '任务开始时间',
         null=False,
         blank=False
     )
@@ -280,7 +275,7 @@ class TaskResult(AbstractTask):
 
 
     # 成功或者失败
-    status = models.PositiveSmallIntegerField(
+    status = models.BooleanField(
         '状态',
         null=False,
         blank=False

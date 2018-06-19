@@ -17,7 +17,8 @@ class TaskSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Task
-        fields = '__all__'
+        fields = ('name', 'run_time', 'loops', 'num_threads',
+                  'scheduler', 'duration', 'machines', 'jmx_file', 'data_file', 'task_start_time')
     
 
 class TaskResultSerializer(serializers.ModelSerializer):
@@ -48,11 +49,11 @@ class FilesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Files
-        fields = '__all__'
+        fields = ('name', 'file')
 
 
 class MachineSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Machine
-        fields = '__all__'
+        fields = ('name', 'port', 'ip', 'password', 'status', 'is_slave')
