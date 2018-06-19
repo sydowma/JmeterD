@@ -47,8 +47,7 @@ class FilesView(views.APIView):
     def post(self, request, format=None):
         """
         """
-        file_obj = request.data['file']
-        print(file_obj)
+        
 
 
 
