@@ -13,5 +13,6 @@ class CheckHostTest(TestCase):
 
     def test_cat_host(self):
         c = CheckHost(self.l)
-        r = c.check_host()
+        r = c.list_host()
+
         

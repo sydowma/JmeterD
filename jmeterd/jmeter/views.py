@@ -5,6 +5,8 @@ from rest_framework import authentication, permissions, status, viewsets
 from rest_framework import status
 from util.http import json_response, response_entity
 
+from .service import check_host
+
 
 class MachineViewSet(viewsets.ViewSet):
     """

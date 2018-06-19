@@ -18,12 +18,14 @@ class ConnectionExecutor():
 
     def run(self, command):
         if self._is_local:
-            self.connection.local(command)
+            return self.connection.local(command)
         else:
-            self.connection.run(command)
+            return self.connection.run(command)
 
     def sudo(self, command):
         if self._is_local:
-            self.connection.local(command)
+            return self.connection.local(command)
         else:
-            self.connection.sudo(command)
+            return self.connection.sudo(command)
+
+    
