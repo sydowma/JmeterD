@@ -3,7 +3,7 @@ from django.shortcuts import render
 # Create your views here.
 from django.shortcuts import get_object_or_404
 from rest_framework import authentication, permissions, status, viewsets
-from rest_framework import status, response, parsers
+from rest_framework import status, response, parsers, views
 
 from util.http import json_response
 from util.http.response_entity import ResponseEntity
@@ -31,38 +31,43 @@ class MachineViewSet(viewsets.ModelViewSet):
     #     pass
 
 
-class FilesViewSet(viewsets.ViewSet):
+
+class FilesView(views.APIView):
     """
     文件接口
     """
-    # queryset = Files.objects.all()
-    # serializer_class = FilesSerializer
 
-    parser_classes = (parsers.FileUploadParser,)
-
-    def list(self, request):
+    def get(self, request):
         """
         """
         queryset = Files.objects.all()
         serializer = FilesSerializer(queryset, many=True)
         return json_response.JsonResponse(ResponseEntity(serializer.data))
 
-    def retrieve(self, request, pk=None):
-        """
-        """
-        queryset = Files.objects.all()
-        file = get_object_or_404(queryset, pk=pk)
-        serializer = Files(file)
-        return json_response.JsonResponse(ResponseEntity(serializer.data))
-    
-    def create(self, request, file_name=None, format=None):
+    def post(self, request, format=None):
         """
         """
         file_obj = request.data['file']
         print(file_obj)
-        pass
-        
 
+
+
+class FilesDetailView(views.APIView):
+    """
+    文件接口
+    """
+    # queryset = Files.objects.all()
+    # serializer_class = FilesSerializer
+
+    def get(self, request, pk=None):
+        """
+        """
+        queryset = Files.objects.all()
+        file = get_object_or_404(queryset, pk=pk)
+        serializer = FilesSerializer(file)
+        return json_response.JsonResponse(ResponseEntity(serializer.data))
+
+    
 
 class TaskViewSet(viewsets.ViewSet):
     """
