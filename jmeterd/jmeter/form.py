@@ -7,6 +7,12 @@ class FilesForm(forms.Form):
     文件上传表单
     """
 
+    # TODO 验证文件类型后缀
+    # if self._upload_valid() is False:
+        # return ResponseEntity('error', status.HTTP_400_BAD_REQUEST, errmsg='文件类型后缀错误')
+
+
+
     filename = forms.CharField(
         required=True,
         max_length=20,

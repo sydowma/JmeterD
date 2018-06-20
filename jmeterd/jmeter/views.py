@@ -100,16 +100,23 @@ class FilesUploadView(views.APIView):
 
 class FilesDetailView(views.APIView):
     """
-    文件接口
+    文件接口 如果不为空，检测文件状态
     """
     # queryset = Files.objects.all()
     # serializer_class = FilesSerializer
 
-    def get(self, request, pk=None):
+    def get(self, request, name=None):
         """
         """
         queryset = Files.objects.all()
-        file = get_object_or_404(queryset, pk=pk)
+        
+        file = get_object_or_404(queryset, name=name)
+        """
+        到这里说明可以找到file
+        """
+        file_u = file_upload.FileUtil(name)
+        file.status = file_u.is_exists
+
         serializer = FilesSerializer(file)
         return json_response.JsonResponse(ResponseEntity(serializer.data))
 

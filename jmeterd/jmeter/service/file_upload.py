@@ -1,4 +1,4 @@
-
+import os
 
 from django.conf import settings
 from util.http.response_entity import ResponseEntity
@@ -15,14 +15,44 @@ DIRS = [DATA_DIR, JMX_DIR]
 
 ALLOW_FILE_SUFFIX = ['.csv', '.jmx']
 
-class UploadFile():
 
-    def __init__(self, file, filename):
-        self.file = file
+class FileUtil():
+
+    def __init__(self, filename):
+
         self.filename = filename
+        
 
         length = len(self.filename)
         self.filename_suffix = self.filename[length - 4: length]
+
+        if self.filename_suffix == '.csv':
+            DIR = DATA_DIR
+        elif self.filename_suffix == '.jmx':
+            DIR = JMX_DIR
+
+        self.file_path = DIR + '/' + self.filename
+
+    @property
+    def is_exists(self):
+        """
+        判断是否存在
+        https://stackoverflow.com/questions/82831/how-do-i-check-whether-a-file-exists
+        :return Bool
+        """
+        try:
+            st = os.stat(self.file_path)
+        except os.error:
+            return False
+        return True
+
+
+class UploadFile(FileUtil):
+
+    def __init__(self, file, filename):
+        
+        super().__init__(filename)
+        self.file = file
 
     
     def _upload_valid(self):
@@ -50,16 +80,7 @@ class UploadFile():
             
     def upload(self):
 
-        if self._upload_valid() is False:
-            return ResponseEntity('error', status.HTTP_400_BAD_REQUEST, errmsg='文件类型后缀错误')
-
-        if self.filename_suffix == '.csv':
-            DIR = DATA_DIR
-        elif self.filename_suffix == '.jmx':
-            DIR = JMX_DIR
-        
-        file_path = DIR + '/' + self.filename
-
+        file_path = self.file_path
         try:
             f = open(file_path, 'wb+')
 
@@ -78,6 +99,7 @@ class UploadFile():
             f.close()
 
 
+        
 
 def handle_uploaded_file(file, file_name):
     """

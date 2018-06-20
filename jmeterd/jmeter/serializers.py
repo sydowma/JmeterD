@@ -49,7 +49,7 @@ class FilesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Files
-        fields = ('name', 'file_path')
+        fields = ('name', 'file_path', 'status')
 
 
 class MachineSerializer(serializers.ModelSerializer):
