@@ -123,7 +123,7 @@ class Files(models.Model):
     """
     name = models.CharField(
         "文件名",
-        max_length=20,
+        max_length=50,
         null=False,
         blank=False,
         unique=True,

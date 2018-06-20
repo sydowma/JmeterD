@@ -15,7 +15,7 @@ class FilesForm(forms.Form):
 
     filename = forms.CharField(
         required=True,
-        max_length=20,
+        max_length=50,
         error_messages={
             'required': '请输入文件名',
             'max_length': '文件名太长了',

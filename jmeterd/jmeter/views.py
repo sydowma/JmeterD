@@ -19,6 +19,7 @@ from .valid import Valid
 
 from .form import FilesForm
 from .service import file_upload
+from .parser import TextCSVParser, JmxParser
 
 class MachineViewSet(viewsets.ModelViewSet):
     """
@@ -38,16 +39,6 @@ class MachineViewSet(viewsets.ModelViewSet):
     #     pass
 
 
-class TextCSVParser(parsers.BaseParser):
-    media_type = 'text/csv'
-
-    def parse(self, stream, media_type=None, parse_context=None):
-        
-        return stream.read()
-
-class JmxParse(parsers.BaseParser):
-    pass
-    
 
 class FilesView(views.APIView):
     """
@@ -66,7 +57,7 @@ class FilesView(views.APIView):
 
 class FilesUploadView(views.APIView):
 
-    parser_classes = (TextCSVParser,)
+    parser_classes = (TextCSVParser, JmxParser)
 
     def post(self, request, format=None):
         """
