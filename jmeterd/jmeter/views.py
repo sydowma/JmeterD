@@ -42,7 +42,7 @@ class TextCSVParser(parsers.BaseParser):
     media_type = 'text/csv'
 
     def parse(self, stream, media_type=None, parse_context=None):
-        print(media_type, parse_context)
+        
         return stream.read()
 
 class JmxParse(parsers.BaseParser):
@@ -70,15 +70,18 @@ class FilesUploadView(views.APIView):
 
     def post(self, request, filename, format=None):
         """
+        客户端先检查有没有相同文件
         """
         # files_valid = FilesValid(request)
         # result = files_valid.valid()
 
         # form = FilesForm(request.POST, request.FILES)
-        file_obj = request.data
-        is_success = file_upload.handle_uploaded_file(file_obj, filename)
-        if is_success:
-            return json_response.JsonResponse(ResponseEntity('success'))
+
+        f = file_upload.UploadFile(request.data, filename)
+        return json_response.JsonResponse(f.upload())
+
+        # return json_response.JsonResponse(file_upload.handle_uploaded_file(file_obj, filename))
+
         # form = FilesForm(filename, request.FILES)
         
         # if form.is_valid():
