@@ -126,6 +126,7 @@ class Files(models.Model):
         max_length=20,
         null=False,
         blank=False,
+        unique=True,
         default=""
     )
     

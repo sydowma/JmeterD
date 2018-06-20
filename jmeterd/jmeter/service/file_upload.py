@@ -35,7 +35,14 @@ class UploadFile():
             return True
 
     def _save_file(self, file_path):
-        file = Files()
+        """
+        1. 先检查如果有相同名称的更改
+        """
+        file_exist = Files.objects.filter(name=self.filename)
+        if file_exist:
+            file = file_exist[0]
+        else:
+            file = Files()
         file.file_path = file_path
         file.name = self.filename
         file.save()
@@ -61,7 +68,7 @@ class UploadFile():
 
             f.write(self.file)
 
-            self._save_file(DIR)
+            self._save_file(file_path)
 
             return ResponseEntity('success')
         except Exception as e:
