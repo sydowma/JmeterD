@@ -5,7 +5,10 @@ import xml.etree.ElementTree as ET
 # Create your tests here.
 from fabric import Connection
 from jmeter.service.check_host import CheckHost
+from jmeter.service.jmx_parse import JmxParser, ThreadGroup
 
+
+EXAMPLE_JMX_PATH = settings.BASE_DIR + '/jmx_file/CSVSample.jmx'
 
 class CheckHostTest(TestCase):
 
@@ -15,18 +18,18 @@ class CheckHostTest(TestCase):
 
     def test_cat_host(self):
         c = CheckHost(self.l)
-        r = c.list_host()
+        c.list_host()
 
 
 class CheckXML(TestCase):
 
     def setUp(self):
-        self.file = open(settings.BASE_DIR + '/jmx_file/CSVSample.jmx', 'r')
-        self.tree = ET.parse(self.file)
+        self.tree = ET.parse(EXAMPLE_JMX_PATH)
         self.root = self.tree.getroot()
 
     def test_root(self):
-        self.root.text
+        print(self.root.text)
+        print(self.root.tag)
         assert self.root.tag == 'jmeterTestPlan'
         assert self.root.attrib['version'] == '1.2'
         assert self.root.attrib['properties'] == '3.2'
@@ -39,7 +42,7 @@ class CheckXML(TestCase):
             elif elem.attrib['name'] == 'ThreadGroup.ramp_time':
                 assert elem.text == '1'
             elif elem.attrib['name'] == 'ThreadGroup.duration':
-                assert len(elem.text) == 0
+                assert elem.text is None
 
     
     def test_scheduler(self):
@@ -47,7 +50,28 @@ class CheckXML(TestCase):
             if elem.attrib['name'] == 'ThreadGroup.scheduler':
                 assert elem.text == 'false'
 
+    def test_loops(self):
+        for elem in self.root.iter(tag="intProp"):
+            if elem.attrib['name'] == 'LoopController.loops':
+                assert elem.text == '-1'
+
 
     def tearDown(self):
-        self.file.close()
+        # self.file.close()
+        pass
         
+
+class TestJmxParser(TestCase):
+
+    def setUp(self):
+        self.jmx_parser = JmxParser(EXAMPLE_JMX_PATH)
+    
+    def test_parse_xml(self):
+
+        thread_group = self.jmx_parser.parse_thread_group
+
+        assert thread_group.loops == '-1'
+        assert thread_group.num_threads == '1'
+        assert thread_group.scheduler == 'false'
+        assert len(thread_group.duration) == 0
+
