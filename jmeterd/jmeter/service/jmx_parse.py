@@ -62,6 +62,9 @@ class JmxParser():
 
     @property
     def parse_thread_group(self):
+        """
+        从 jmx 文件解析为 ThreadGroup 实体
+        """
         
         thread_group = ThreadGroup()
 
@@ -72,6 +75,7 @@ class JmxParser():
             element_name = elem.attrib['name']
             if element_name == 'LoopController.loops':
                 thread_group.loops = elem.text
+                break
 
         for elem in root.iter(tag="stringProp"):
             element_name = elem.attrib['name']
@@ -84,6 +88,7 @@ class JmxParser():
             element_name = elem.attrib['name']
             if element_name == 'ThreadGroup.scheduler':
                 thread_group.scheduler = elem.text
+                break
 
         return thread_group
 

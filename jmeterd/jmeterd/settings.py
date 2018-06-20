@@ -181,3 +181,4 @@ JMETER_PATH = BASE_DIR + '/jmeter'
 
 APPEND_SLASH = False
 
+#################################### CELERY
