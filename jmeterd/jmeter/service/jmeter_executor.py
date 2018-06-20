@@ -30,7 +30,7 @@ class JmeterExecutor():
             jtl_name, JMETER_REPORTER_PATH + report_name
         )
     
-    def _run_shell(self):
+    def run_shell(self):
         return self.connection.run(self._shell())
         
     

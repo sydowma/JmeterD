@@ -32,6 +32,17 @@ def execute(func, *args, **kwargs):
     func = import_string(func)
     return func(*args, **kwargs)
 
+import datetime
+
+@app.task
+def interval(func, seconds, args=(), task_id=None):
+    next_run_time = datetime.datetime.now() + datetime.timedelta(seconds=seconds)
+    kwargs = dict(args=(func, seconds, args), eta=next_run_time)
+    if task_id is not None:
+        kwargs.update(task_id=task_id)
+    interval.apply_async(**kwargs)
+    func = import_string(func)
+    return func(*args)
 
 from inspect import getmembers, isfunction
 

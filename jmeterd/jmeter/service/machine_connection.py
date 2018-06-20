@@ -5,8 +5,12 @@ import sys
 
 class MachineConfig():
 
-    def __init__(self):
-        
+    def __init__(self, machine):
+        """
+        从 model 转为 实体类
+        """
+        self.machine = machine
+
         self.host = None
         self.user = None
         self.port = None
@@ -15,10 +19,12 @@ class MachineConfig():
 
 class MachineConnection():
 
-    def __init__(self, machine):
+    def __init__(self, machine_config):
         """
+        :param machine_config 传入一个机器配置类
+        :param 
         """
-        self.machine = machine
+        self.machine_config = MachineConfig(machine_config)
         self.connection = None
         self._connect()
 
