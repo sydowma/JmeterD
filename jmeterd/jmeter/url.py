@@ -3,7 +3,10 @@ from jmeter import views
 
 urlpatterns = [
     url(r'^files$', views.FilesView.as_view()),
-    url(r'^files/(?P<pk>\d+)$', views.FilesDetailView.as_view()),
 
-    url(r'^files/(?P<filename>[^/]+)$', views.FilesUploadView.as_view())
+    # 查询文件
+    url(r'^files/(?P<filename>[^/]+)$', views.FilesDetailView.as_view()),
+
+    # 上传
+    url(r'^upload$', views.FilesUploadView.as_view())
 ]

@@ -1,5 +1,6 @@
 
 from django import forms
+from django.conf import settings
 
 class FilesForm(forms.Form):
     """
@@ -17,9 +18,10 @@ class FilesForm(forms.Form):
         },
     )
 
-    file = forms.FileField(
-        required=True,
-        error_messages={
-            'invalid': '错误的文件',
-        },
-    )
+    # file = forms.FilePathField(
+    #     required=True,
+    #     path=settings.BASE_DIR,
+    #     error_messages={
+    #         'invalid': '错误的文件',
+    #     },
+    # )

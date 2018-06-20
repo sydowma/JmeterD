@@ -135,7 +135,8 @@ class Files(models.Model):
         null=False,
         default=0
     )
-    file = models.FileField(
+
+    file_path = models.FilePathField(
         '文件',
         null=False,
         blank=False,

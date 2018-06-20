@@ -68,17 +68,23 @@ class FilesUploadView(views.APIView):
 
     parser_classes = (TextCSVParser,)
 
-    def post(self, request, filename, format=None):
+    def post(self, request, format=None):
         """
         客户端先检查有没有相同文件
         """
         # files_valid = FilesValid(request)
         # result = files_valid.valid()
 
-        # form = FilesForm(request.POST, request.FILES)
-
-        f = file_upload.UploadFile(request.data, filename)
-        return json_response.JsonResponse(f.upload())
+        data = {
+            'filename': request.META.get('HTTP_FILENAME'),
+        }
+        form = FilesForm(data)
+        if form.is_valid():
+            f = file_upload.UploadFile(
+                request.data, request.META.get('HTTP_FILENAME'))
+            return json_response.JsonResponse(f.upload())
+        else:
+            return json_response.JsonResponse(Valid.form_errors(form))
 
         # return json_response.JsonResponse(file_upload.handle_uploaded_file(file_obj, filename))
 

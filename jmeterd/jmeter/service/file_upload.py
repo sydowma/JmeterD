@@ -4,6 +4,8 @@ from django.conf import settings
 from util.http.response_entity import ResponseEntity
 from rest_framework import status
 
+from ..models import Files
+
 BASE_DIR = settings.BASE_DIR
 
 DATA_DIR = BASE_DIR + '/data_file'
@@ -18,8 +20,10 @@ class UploadFile():
     def __init__(self, file, filename):
         self.file = file
         self.filename = filename
+
         length = len(self.filename)
         self.filename_suffix = self.filename[length - 4: length]
+
     
     def _upload_valid(self):
         """
@@ -29,6 +33,13 @@ class UploadFile():
             return False
         else:
             return True
+
+    def _save_file(self, file_path):
+        file = Files()
+        file.file_path = file_path
+        file.name = self.filename
+        file.save()
+
             
     def upload(self):
 
@@ -50,16 +61,21 @@ class UploadFile():
 
             f.write(self.file)
 
+            self._save_file(DIR)
+
             return ResponseEntity('success')
         except Exception as e:
             # print(e)
-            return ResponseEntity('error', status.HTTP_400_BAD_REQUEST, errmsg=e)
+            return ResponseEntity('error', status.HTTP_400_BAD_REQUEST, errmsg=e.args)
         finally:
             f.close()
 
 
 
 def handle_uploaded_file(file, file_name):
+    """
+    弃用
+    """
     length = len(file_name)
     if file_name[length - 4: length] == '.csv':
         DIR = DATA_DIR
