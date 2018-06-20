@@ -115,7 +115,14 @@ class FilesDetailView(views.APIView):
         到这里说明可以找到file
         """
         file_u = file_upload.FileUtil(name)
-        file.status = file_u.is_exists
+
+        """
+        当文件状态属性更新时同时更新数据库
+        """
+        if file_u.is_exists is not file.status:
+            file.status = file_u.is_exists
+            file.save()
+        
 
         serializer = FilesSerializer(file)
         return json_response.JsonResponse(ResponseEntity(serializer.data))

@@ -134,7 +134,7 @@ class Files(models.Model):
     status = models.BooleanField(
         blank=False,
         null=False,
-        default=0
+        default=True
     )
 
     file_path = models.FilePathField(
