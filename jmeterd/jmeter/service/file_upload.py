@@ -40,11 +40,12 @@ class FileUtil():
         https://stackoverflow.com/questions/82831/how-do-i-check-whether-a-file-exists
         :return Bool
         """
-        try:
-            st = os.stat(self.file_path)
-        except os.error:
-            return False
-        return True
+        return os.path.isfile(self.file_path)
+        # try:
+        #     os.stat(self.file_path)
+        # except os.error:
+        #     return False
+        # return True
 
 
 class UploadFile(FileUtil):

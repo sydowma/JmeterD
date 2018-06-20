@@ -1,6 +1,9 @@
 from django.conf import settings
+import os
 
 JMETER_PATH = settings.JMETER_PATH
+BASE_DIR = settings.BASE_DIR
+
 class EnvironmentInitialization():
     """
     初始化环境
@@ -14,6 +17,34 @@ class EnvironmentInitialization():
         """
         self.connection = connection
 
+    @property
+    def _check_jmeter_dir(self):
+        """
+        1. 检查 JMeter   -->  下载
+        2. 检查 JMeter 完整
+        3. 检查 
+        """
+        return os.path.isdir(JMETER_PATH)
+
+    @property
+    def _check_jmeter_completion(self):
+        return os.path.isfile(JMETER_PATH + '/bin/jmeter.sh')
+
+    @property
+    def _check_jtl_dir(self):
+        return os.path.isdir(BASE_DIR + '/jtl_file')
+
+    @property
+    def _check_jmx_dir(self):
+        return os.path.isdir(BASE_DIR + '/jmx_file')
+
+    @property
+    def _check_report_dir(self):
+        return os.path.isdir(BASE_DIR + '/report')
+
+    @property
+    def _check_data_file_dir(self):
+        return os.path.isdir(BASE_DIR + '/data_file')
 
     @property
     def check_java(self):
