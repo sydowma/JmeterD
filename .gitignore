@@ -6,6 +6,11 @@ __pycache__/
 # C extensions
 *.so
 
+jmeterd/data_file/
+jmeterd/jmx_file/
+jmeterd/jtl_file/
+jmeterd/report/
+
 # Distribution / packaging
 .Python
 build/

@@ -13,24 +13,36 @@ class Valid(object):
     def __init__(self, form):
         self.form = form
 
-    @property
-    def form_errors(self):
+    # @property
+    # def form_errors(self):
+    #     return ResponseEntity(
+    #         self.form.data, status_code.HTTP_400_BAD_REQUEST, FormErrors.errors_message(
+    #             self.form)
+    #     )
+
+    @staticmethod
+    def form_errors(form):
         return ResponseEntity(
-            self.form.data, status_code.HTTP_400_BAD_REQUEST, FormErrors.errors_message(
-                self.form)
+            form.data, status_code.HTTP_400_BAD_REQUEST, FormErrors.errors_message(
+                form)
         )
 
 
 
-class FilesValid(object):
 
-    def __init__(self, data):
-        self.form = FilesForm(data)
+class FilesValid(object):
+    """
+    弃用
+    """
+
+    def __init__(self, request):
+        self.form = FilesForm(request.POST, request.FILES)
         self.base_valid = Valid(self.form)
     
     def valid(self):
         if self.form.is_valid():
             pass
+            
         else:
             return self.base_valid.form_errors
 

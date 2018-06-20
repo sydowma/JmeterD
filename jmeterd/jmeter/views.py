@@ -2,6 +2,9 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.shortcuts import get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+
 from rest_framework import authentication, permissions, status, viewsets
 from rest_framework import status, response, parsers, views
 
@@ -12,6 +15,10 @@ from .service import check_host
 from .models import (Task, Machine, Files, TaskResult)
 from .serializers import (TaskSerializer, MachineSerializer, FilesSerializer, TaskResultSerializer)
 
+from .valid import Valid
+
+from .form import FilesForm
+from .service import file_upload
 
 class MachineViewSet(viewsets.ModelViewSet):
     """
@@ -31,11 +38,23 @@ class MachineViewSet(viewsets.ModelViewSet):
     #     pass
 
 
+class TextCSVParser(parsers.BaseParser):
+    media_type = 'text/csv'
+
+    def parse(self, stream, media_type=None, parse_context=None):
+        print(media_type, parse_context)
+        return stream.read()
+
+class JmxParse(parsers.BaseParser):
+    pass
+    
 
 class FilesView(views.APIView):
     """
     文件接口
     """
+
+    
 
     def get(self, request):
         """
@@ -44,11 +63,30 @@ class FilesView(views.APIView):
         serializer = FilesSerializer(queryset, many=True)
         return json_response.JsonResponse(ResponseEntity(serializer.data))
 
-    def post(self, request, format=None):
-        """
-        """
-        
 
+class FilesUploadView(views.APIView):
+
+    parser_classes = (TextCSVParser,)
+
+    def post(self, request, filename, format=None):
+        """
+        """
+        # files_valid = FilesValid(request)
+        # result = files_valid.valid()
+
+        # form = FilesForm(request.POST, request.FILES)
+        file_obj = request.data
+        is_success = file_upload.handle_uploaded_file(file_obj, filename)
+        if is_success:
+            return json_response.JsonResponse(ResponseEntity('success'))
+        # form = FilesForm(filename, request.FILES)
+        
+        # if form.is_valid():
+        #     instance = Files(file_field=request.data)
+        #     instance.save()
+        #     return json_response.JsonResponse(ResponseEntity(21312))
+        # else:
+        #     return json_response.JsonResponse(Valid.form_errors(form))
 
 
 class FilesDetailView(views.APIView):

@@ -6,7 +6,7 @@ class FilesForm(forms.Form):
     文件上传表单
     """
 
-    fileName = forms.CharField(
+    filename = forms.CharField(
         required=True,
         max_length=20,
         error_messages={
