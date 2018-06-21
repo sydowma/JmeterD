@@ -17,9 +17,10 @@ from .serializers import (TaskSerializer, MachineSerializer, FilesSerializer, Ta
 
 from .valid import Valid
 
-from .form import FilesForm
+from .form import FilesForm, TaskForm
 from .service import file_upload
 from .parser import TextCSVParser, JmxParser
+from .tasks import async_run_task
 
 class MachineViewSet(viewsets.ModelViewSet):
     """
@@ -37,6 +38,20 @@ class MachineViewSet(viewsets.ModelViewSet):
     #     """
     #     """
     #     pass
+
+
+class TaskRunView(views.APIView):
+    """
+    任务执行
+    """
+
+    def post(self, request):
+        form = TaskForm(request.POST)
+        if form.is_valid():
+            async_run_task(form.cleaned_data['task_id'])
+            return json_response.JsonResponse('success')
+        else:
+            return json_response.JsonResponse(Valid.form_errors(form))
 
 
 
@@ -119,20 +134,24 @@ class FilesDetailView(views.APIView):
         return json_response.JsonResponse(ResponseEntity(serializer.data))
 
     
-
-class TaskViewSet(viewsets.ViewSet):
+class TaskView(views.APIView):
     """
     """
+    # queryset = Task.objects.all()
+    # serializer_class = TaskSerializer
 
-    def list(self, request):
+    def get(self, request):
         """
         """
         queryset = Task.objects.all()
         serializer = TaskSerializer(queryset, many=True)
         # return response.Response(serializer.data)
         return json_response.JsonResponse(ResponseEntity(serializer.data))
-    
-    def retrieve(self, request, pk=None):
+
+
+class TaskDetailView(views.APIView):
+
+    def get(self, request, pk=None):
         """
         """
         queryset = Task.objects.all()
@@ -140,9 +159,6 @@ class TaskViewSet(viewsets.ViewSet):
         serializer = TaskSerializer(task)
         # return response.Response(serializer.data)
         return json_response.JsonResponse(ResponseEntity(serializer.data))
-
-    # def create(self, request):
-    #     pass
 
 
 class TaskResultViewSet(viewsets.ReadOnlyModelViewSet):

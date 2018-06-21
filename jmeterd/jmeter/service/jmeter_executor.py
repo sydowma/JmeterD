@@ -35,7 +35,7 @@ class JmeterExecutor():
     
     def run_shell(self):
         """
-        执行 Shell 
+        执行 Shell
         保持 jtl 文件名与报告文件夹名一致
         """
         JMETER_PATH = settings.JMETER_PATH

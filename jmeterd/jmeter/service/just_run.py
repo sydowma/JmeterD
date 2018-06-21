@@ -22,7 +22,6 @@ class TaskRun():
             self.machine_connection, self.task)
 
 
-    @shared_task
     def run_jmeter(self):
         """
         

@@ -177,7 +177,7 @@ REST_FRAMEWORK = {
 
 
 #################################### JMETER
-JMETER_PATH = BASE_DIR + '/jmeter'
+JMETER_PATH = BASE_DIR + '/_jmeter_install_package'
 
 APPEND_SLASH = False
 

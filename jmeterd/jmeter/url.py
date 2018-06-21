@@ -1,6 +1,6 @@
 from django.conf.urls import url, include
 from rest_framework import routers
-from .views import MachineViewSet
+from .views import MachineViewSet, TaskView, TaskDetailView
 from jmeter import views
 
 
@@ -12,10 +12,15 @@ urlpatterns = [
 
     # 上传
     url(r'^upload$', views.FilesUploadView.as_view()),
+
+    url(r'^task$', views.TaskView.as_view()),
+    url(r'^task/(?P<pk>[\d]+)$', views.TaskDetailView.as_view())
+    
     
 ]
 
 
 router = routers.DefaultRouter()
 router.register(r'machine', MachineViewSet, base_name='machine')
-urlpatterns = router.urls
+# router.register(r'task', TaskViewSet, base_name='task')
+urlpatterns += router.urls

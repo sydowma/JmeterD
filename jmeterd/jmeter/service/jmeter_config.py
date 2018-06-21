@@ -1,6 +1,7 @@
 
 
 from .jmx_parse import ThreadGroup, JmxParser
+
 class JmeterConfig():
     """
     JMeter 配置相关

@@ -17,9 +17,9 @@ class TaskSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Task
-        fields = ('name', 'run_time', 'loops', 'num_threads',
-                  'scheduler', 'duration', 'machines', 'jmx_file', 'data_file', 'task_start_time')
-    
+        fields = ('id', 'name', 'run_time', 'loops', 'num_threads',
+                  'scheduler', 'duration', 'machines', 'jmx_file', 'data_file')
+
 
 class TaskResultSerializer(serializers.ModelSerializer):
     """

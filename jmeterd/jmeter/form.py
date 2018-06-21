@@ -31,3 +31,18 @@ class FilesForm(forms.Form):
     #         'invalid': '错误的文件',
     #     },
     # )
+
+
+class TaskForm(forms.Form):
+    """
+    Task Form
+    """
+    task_id = forms.IntegerField(
+        required=True,
+        min_value=1,
+        error_messages={
+            'required': '请输入任务id',
+            'invalid': '错误的任务id',
+            'min_value': '错误的任务id'
+        }
+    )

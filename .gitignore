@@ -10,6 +10,7 @@ jmeterd/data_file/**
 jmeterd/jmx_file/**
 jmeterd/jtl_file/**
 jmeterd/report/**
+jmeterd/_jmeter_install_package/**
 
 !jmeterd/jmx_file/CSVSample.jmx
 !jmeterd/data_file/CSVSample_user.csv

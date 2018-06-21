@@ -20,8 +20,8 @@ def add(x, y):
 from .service import jmeter_executor, machine_connection, just_run
 
 @shared_task
-def async_run_shell():
-    run = just_run.TaskRun()
+def async_run_task(task_id):
+    run = just_run.TaskRun(task_id)
     run.run_jmeter()
 
 def call_task():

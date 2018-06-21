@@ -1,6 +1,8 @@
 from django.db import models
 
 # Create your models here.
+from datetime import datetime
+
 __doc__ = """
 存储文件地址
 历史记录
@@ -229,12 +231,14 @@ class Task(AbstractTask):
     task_start_time = models.DateTimeField(
         '任务开始时间',
         null=False,
-        blank=False
+        blank=False,
+        default="1970-01-01T00:00"
     )
     task_end_time = models.DateTimeField(
         '任务结束时间',
         null=False,
-        blank=False
+        blank=False,
+        default="1970-01-01T00:00"
     )
 
     gmt_create = models.DateTimeField(
