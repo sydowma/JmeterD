@@ -15,19 +15,20 @@ class MachineSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Machine
-        fields = ('name', 'port', 'ip', 'password', 'status', 'is_slave')
+        fields = ('name', 'port', 'ip', 'password', 'status', 'is_slave', 'task')
 
 class TaskSerializer(serializers.ModelSerializer):
     """
     任务 model 序列化
     """
-    task_machines = MachineSerializer(
+    machines = MachineSerializer(
         many=True, read_only=True)
+
 
     class Meta:
         model = Task
         fields = ('id', 'name', 'run_time', 'loops', 'num_threads',
-                  'scheduler', 'duration', 'machines', 'jmx_file', 'data_file', 'task_machines')
+                  'scheduler', 'duration', 'machines')
 
 
 class TaskResultSerializer(serializers.ModelSerializer):

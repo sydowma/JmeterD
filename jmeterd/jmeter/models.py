@@ -44,109 +44,6 @@ class Host(models.Model):
         default_permissions = ('add', 'change')
 
 
-class Machine(models.Model):
-    """
-    """
-    name = models.CharField(
-        "机器名",
-        max_length=20,
-        null=False,
-        blank=False,
-        default=""
-    )
-    port = models.PositiveIntegerField(
-        '机器端口',
-        blank=False,
-        null=False,
-        default=22
-    )
-    ip = models.GenericIPAddressField(
-        'IP地址',
-        blank=False,
-        null=False,
-        default="127.0.0.1"
-    )
-    password = models.CharField(
-        'password',
-        max_length=50,
-        blank=False,
-        null=False,
-        default=""
-
-    )
-
-    # secret_key = models.FileField(
-    #     '秘钥文件',
-    #     null=False,
-    #     blank=True
-    # )
-
-    status = models.BooleanField(
-        '状态, 离线/在线',
-        blank=False,
-        null=False,
-        default=0
-
-    )
-
-    is_slave = models.BooleanField(
-        '是否是从机器, 只允许一个主机器',
-        blank=False,
-        null=False,
-        default=False
-    )
-
-    # host = models.ForeignKey(
-    #     Host,
-    #     on_delete=models.CASCADE,
-    #     db_constraint=False,
-    #     null=False,
-    #     blank=False
-    # )
-
-    gmt_create = models.DateTimeField(
-        "创建时间",
-        null=False,
-        auto_now_add=True,
-    )
-    gmt_modified = models.DateTimeField(
-        '修改时间',
-        null=False,
-        auto_now=True
-    )
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        db_table = 'jmeter_machine'
-        ordering = ['-gmt_modified']
-        default_permissions = ('add', 'change')
-
-class Files(models.Model):
-    """
-    """
-    name = models.CharField(
-        "文件名",
-        max_length=50,
-        null=False,
-        blank=False,
-        unique=True,
-        default=""
-    )
-    
-    # 状态，0 未知，  1不存在， 2存在
-    status = models.BooleanField(
-        blank=False,
-        null=False,
-        default=True
-    )
-
-    file_path = models.FilePathField(
-        '文件',
-        null=False,
-        blank=False,
-    )
 
 
 class AbstractTask(models.Model):
@@ -205,34 +102,12 @@ class Task(AbstractTask):
         default=True,
     )
 
-    jmx_file = models.OneToOneField(
-        Files,
-        related_name='task_jmx_file',
-        on_delete=models.CASCADE,
+    jmx_file = models.FilePathField(
         null=False,
         blank=False,
-        default=0
+        default=""
     )
 
-    data_file = models.ForeignKey(
-        Files,
-        related_name='task_data_file',
-        on_delete=models.CASCADE,
-        null=False,
-        blank=True
-    )
-
-    machines = models.ForeignKey(
-        Machine,
-        related_name='task_machines',
-        on_delete=models.CASCADE,
-        db_constraint=False,
-        null=False,
-        blank=False,
-        verbose_name='压力源机器'
-    )
-
-    
     task_start_time = models.DateTimeField(
         '任务开始时间',
         null=False,
@@ -267,21 +142,17 @@ class Task(AbstractTask):
 class TaskResult(AbstractTask):
     """
     """
-    jmx_file = models.OneToOneField(
-        Files,
-        related_name='result_jmx_file',
-        on_delete=models.CASCADE,
+    jmx_file = models.FilePathField(
         null=False,
         blank=False,
-        default=0
+        default=""
     )
 
-    data_file = models.ForeignKey(
-        Files,
-        related_name='result_data_file',
-        on_delete=models.CASCADE,
+    data_files_id = models.CharField(
+        max_length=100,
         null=False,
-        blank=True
+        blank=False,
+        default=""
     )
 
 
@@ -292,14 +163,11 @@ class TaskResult(AbstractTask):
         blank=False
     )
 
-    machines = models.ForeignKey(
-        Machine,
-        related_name='task_result_machines',
-        on_delete=models.CASCADE,
-        db_constraint=False,
+    machines_id = models.CharField(
+        max_length=100,
         null=False,
         blank=False,
-        verbose_name='压力源机器'
+        default=""
     )
 
     gmt_create = models.DateTimeField(
@@ -313,6 +181,132 @@ class TaskResult(AbstractTask):
 
     class Meta:
         db_table = 'jmeter_task_result'
+        ordering = ['-gmt_modified']
+        default_permissions = ('add', 'change')
+
+
+class Files(models.Model):
+    """
+    """
+    name = models.CharField(
+        "文件名",
+        max_length=50,
+        null=False,
+        blank=False,
+        unique=True,
+        default=""
+    )
+
+    # 状态，0 未知，  1不存在， 2存在
+    status = models.BooleanField(
+        blank=False,
+        null=False,
+        default=True
+    )
+
+    file_path = models.FilePathField(
+        '文件',
+        null=False,
+        blank=False,
+    )
+
+    task_data_file = models.ForeignKey(
+        Task,
+        related_name='task_data_file',
+        on_delete=models.CASCADE,
+        db_constraint=False,
+        null=False,
+        blank=False,
+        default=""
+    )
+
+class Machine(models.Model):
+    """
+    """
+    name = models.CharField(
+        "机器名",
+        max_length=20,
+        null=False,
+        blank=False,
+        default=""
+    )
+    port = models.PositiveIntegerField(
+        '机器端口',
+        blank=False,
+        null=False,
+        default=22
+    )
+    ip = models.GenericIPAddressField(
+        'IP地址',
+        blank=False,
+        null=False,
+        default="127.0.0.1"
+    )
+    password = models.CharField(
+        'password',
+        max_length=50,
+        blank=False,
+        null=False,
+        default=""
+
+    )
+
+    task = models.ForeignKey(
+        Task,
+        related_name='machines',
+        on_delete=models.CASCADE,
+        db_constraint=False,
+        null=False,
+        blank=False,
+        default="",
+        verbose_name='任务'
+    )
+
+    # secret_key = models.FileField(
+    #     '秘钥文件',
+    #     null=False,
+    #     blank=True
+    # )
+
+    status = models.BooleanField(
+        '状态, 离线/在线',
+        blank=False,
+        null=False,
+        default=0
+
+    )
+
+    is_slave = models.BooleanField(
+        '是否是从机器, 只允许一个主机器',
+        blank=False,
+        null=False,
+        default=False
+    )
+
+    # host = models.ForeignKey(
+    #     Host,
+    #     on_delete=models.CASCADE,
+    #     db_constraint=False,
+    #     null=False,
+    #     blank=False
+    # )
+
+    gmt_create = models.DateTimeField(
+        "创建时间",
+        null=False,
+        auto_now_add=True,
+    )
+    gmt_modified = models.DateTimeField(
+        '修改时间',
+        null=False,
+        auto_now=True
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        db_table = 'jmeter_machine'
         ordering = ['-gmt_modified']
         default_permissions = ('add', 'change')
 
