@@ -209,7 +209,7 @@ class Task(AbstractTask):
         default=True,
     )
 
-    jmx_file = models.ForeignKey(
+    jmx_file = models.OneToOneField(
         Files,
         related_name='task_jmx_file',
         on_delete=models.CASCADE,
@@ -258,7 +258,7 @@ class Task(AbstractTask):
 class TaskResult(AbstractTask):
     """
     """
-    jmx_file = models.ForeignKey(
+    jmx_file = models.OneToOneField(
         Files,
         related_name='result_jmx_file',
         on_delete=models.CASCADE,

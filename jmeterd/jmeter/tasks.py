@@ -17,13 +17,12 @@ def add(x, y):
     return x + y
 
 
-from .service import jmeter_executor, machine_connection
+from .service import jmeter_executor, machine_connection, just_run
 
 @shared_task
 def async_run_shell():
-    connection = machine_connection.MachineConnection()
-    exectuor = jmeter_executor.JmeterExecutor()
-    exectuor.run_shell()
+    run = just_run.TaskRun()
+    run.run_jmeter()
 
 def call_task():
     """

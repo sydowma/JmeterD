@@ -60,6 +60,13 @@ class JmxParser():
         self.file_path = file_path
         self.thread_group = self.parse_thread_group
 
+    # @classmethod
+    # def make_thread_group(cls, file_path):
+    #     """
+    #     """
+    #     t = cls(file_path)
+    #     return t.thread_group
+
     @property
     def parse_thread_group(self):
         """

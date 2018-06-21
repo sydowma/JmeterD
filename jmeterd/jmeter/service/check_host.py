@@ -1,7 +1,6 @@
 
 from __future__ import absolute_import
-
-from jmeter.service.connection_executor import ConnectionExecutor
+from .machine_connection import MachineConnection
 from python_hosts import Hosts, HostsEntry
 
 IPV4 = 'ipv4'
@@ -12,7 +11,7 @@ class CheckHost():
     """
 
     def __init__(self, connection):
-        self.connection = ConnectionExecutor(connection)
+        self.connection = MachineConnection(connection)
 
     @property
     def _get_all_host(self):
