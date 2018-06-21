@@ -149,6 +149,12 @@ class TaskView(views.APIView):
         return json_response.JsonResponse(ResponseEntity(serializer.data))
 
 
+class TaskViewSet(viewsets.ModelViewSet):
+    """
+    """
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+
 class TaskDetailView(views.APIView):
 
     def get(self, request, pk=None):
@@ -159,6 +165,17 @@ class TaskDetailView(views.APIView):
         serializer = TaskSerializer(task)
         # return response.Response(serializer.data)
         return json_response.JsonResponse(ResponseEntity(serializer.data))
+
+    def put(self, request, pk):
+        """
+        """
+        queryset = Task.objects.all()
+        task = get_object_or_404(queryset, pk=pk)
+        
+        serializer = TaskSerializer(task)
+        return json_response.JsonResponse(ResponseEntity(serializer.data))
+
+
 
 
 class TaskResultViewSet(viewsets.ReadOnlyModelViewSet):

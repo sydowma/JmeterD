@@ -115,6 +115,9 @@ class Machine(models.Model):
         auto_now=True
     )
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         db_table = 'jmeter_machine'
         ordering = ['-gmt_modified']
@@ -187,15 +190,6 @@ class AbstractTask(models.Model):
         default=0
     )
 
-    machines = models.ForeignKey(
-        Machine,
-        on_delete=models.CASCADE,
-        db_constraint=False,
-        null=False,
-        blank=False,
-        verbose_name='压力源机器'
-    )
-
 
     class Meta:
         abstract = True
@@ -227,6 +221,17 @@ class Task(AbstractTask):
         null=False,
         blank=True
     )
+
+    machines = models.ForeignKey(
+        Machine,
+        related_name='task_machines',
+        on_delete=models.CASCADE,
+        db_constraint=False,
+        null=False,
+        blank=False,
+        verbose_name='压力源机器'
+    )
+
     
     task_start_time = models.DateTimeField(
         '任务开始时间',
@@ -286,6 +291,17 @@ class TaskResult(AbstractTask):
         null=False,
         blank=False
     )
+
+    machines = models.ForeignKey(
+        Machine,
+        related_name='task_result_machines',
+        on_delete=models.CASCADE,
+        db_constraint=False,
+        null=False,
+        blank=False,
+        verbose_name='压力源机器'
+    )
+
     gmt_create = models.DateTimeField(
         null=False,
         auto_now_add=True
