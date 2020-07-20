@@ -276,7 +276,7 @@ class Machine(models.Model):
 
     )
 
-    is_slave = models.BooleanField(
+    is_subordinate = models.BooleanField(
         '是否是从机器, 只允许一个主机器',
         blank=False,
         null=False,

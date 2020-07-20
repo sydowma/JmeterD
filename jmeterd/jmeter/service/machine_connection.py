@@ -45,8 +45,8 @@ class MachineConfig():
 class Machines():
 
     def __init__(self):
-        self.master_machine = None
-        self.slave_machines = []
+        self.main_machine = None
+        self.subordinate_machines = []
         self._make_machines()
 
     def _make_machines(self):
@@ -57,10 +57,10 @@ class Machines():
         machines = Machine.objects.all()
 
         for machine in machines:
-            if machine.is_slave is False:
-                self.master_machine = machine
+            if machine.is_subordinate is False:
+                self.main_machine = machine
             else:
-                self.slave_machines.append(machine)
+                self.subordinate_machines.append(machine)
 
     def update_status(self):
         """

@@ -15,7 +15,7 @@ class MachineSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Machine
-        fields = ('name', 'port', 'ip', 'password', 'status', 'is_slave', 'task')
+        fields = ('name', 'port', 'ip', 'password', 'status', 'is_subordinate', 'task')
 
 class TaskSerializer(serializers.ModelSerializer):
     """

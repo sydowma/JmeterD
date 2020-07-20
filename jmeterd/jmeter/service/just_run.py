@@ -15,7 +15,7 @@ class TaskRun():
         self.task_id = task_id
         machines = Machines()
         self.task = self._task
-        self.machine_connection = MachineConnection(machines.master_machine)
+        self.machine_connection = MachineConnection(machines.main_machine)
 
 
         self.jmeter_executor = JmeterExecutor(

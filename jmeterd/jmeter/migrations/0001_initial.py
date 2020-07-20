@@ -61,7 +61,7 @@ class Migration(migrations.Migration):
                 ('ip', models.GenericIPAddressField(default='127.0.0.1', verbose_name='IP地址')),
                 ('password', models.CharField(default='', max_length=50, verbose_name='password')),
                 ('status', models.BooleanField(default=0, verbose_name='状态, 离线/在线')),
-                ('is_slave', models.BooleanField(default=False, verbose_name='是否是从机器, 只允许一个主机器')),
+                ('is_subordinate', models.BooleanField(default=False, verbose_name='是否是从机器, 只允许一个主机器')),
                 ('gmt_create', models.DateTimeField(auto_now_add=True, verbose_name='创建时间')),
                 ('gmt_modified', models.DateTimeField(auto_now=True, verbose_name='修改时间')),
             ],
